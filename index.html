@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style.css" type="text.css">
+    <link rel="stylesheet" href="style.css" type="text/css">
     <title>Async</title>
 </head>
 <body>
@@ -16,6 +16,17 @@
     <button id="reload">Reload</button>
     
     <div id="output"></div> -->
+
+    <div>
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" size="4" value="Dave">
+    </div>
+    <div>
+        <label for="delay">Delay: </label>
+        <input type="text" id="delay" name="delay" size="4" value="1000">
+    </div>
+    <button id="set-alarm">Set Alarm</button>
+    <div id="output"></div>
 
     <script src="main.js"></script>
 </body>

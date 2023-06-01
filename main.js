@@ -1,11 +1,11 @@
-// const name = "Dawie"
+// const name = "Dave"
 // const greeting = `Hello, my name is ${name}`
 // console.log(greeting)
 
 // makeGreeting = (name) => {
 //     return `Hello, my name is ${name}`
 // }
-// const name = "Dawie"
+// const name = "Dave"
 // const greeting = makeGreeting(name)
 // console.log(greeting)
 
@@ -121,24 +121,65 @@
 //         console.error(`Failed to fetch: ${error}`);
 //     });
 
-async function fetchProducts() {
-    try {
-        const response = await fetch(
-            "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
-        );
-        if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`)
+// async function fetchProducts() {
+//     try {
+//         const response = await fetch(
+//             "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+//         );
+//         if (!response.ok) {
+//             throw new Error(`HTTP error: ${response.status}`)
+//         }
+//         const data = await response.json();
+//         return data;
+//     }
+//     catch (error) {
+//         console.log(`Could not get products: ${error}`)
+//     }
+// }
+
+// const promise = fetchProducts();
+// promise.then((data) => console.log(data[0].name))
+
+// const output = document.querySelector("#output")
+// const button = document.querySelector("#set-alarm")
+
+// setAlarm = () => {
+//     setTimeout(() => {
+//         output.textContent = "Wake up!"
+//     }, 1000);
+// }
+
+// button.addEventListener("click", setAlarm);
+
+
+const name = document.querySelector("#name");
+const delay = document.querySelector("#delay");
+const button = document.querySelector("#set-alarm");
+const output = document.querySelector("#output");
+
+alarm = (person, delay) => {
+    return new Promise((resolve, reject) => {
+        if (delay < 0) {
+            throw new Error("Alarm delay must not be negative");
         }
-        const data = await response.json();
-        return data;
-    }
-    catch (error) {
-        console.log(`Could not get products: ${error}`)
-    }
+        setTimeout(() => {
+            resolve(`Wake up, ${person}!`);
+        }, delay)
+    });
 }
 
-const promise = fetchProducts();
-promise.then((data) => console.log(data[0].name))
+// button.addEventListener("click", () => {
+//     alarm(name.value, delay.value)
+//         .then((message) => (output.textContent = message))
+//         .catch((error) => (output.textContent = `Couldn't set alarm: ${error}`))
+// });
 
-
-
+button.addEventListener("click", async () => {
+    try {
+        const message = await alarm(name.value, delay.value);
+        output.textContent = message;
+    }
+    catch (error) {
+        output.textContent = `Couldn't set alarm: ${error}`;
+    }
+});
