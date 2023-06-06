@@ -219,21 +219,54 @@
 // })
 
 
-const worker = new Worker("./generate.js");
+// const worker = new Worker("./generate.js");
 
-document.querySelector('#generate').addEventListener('click', () => {
-    const quota = document.querySelector('#quota').value;
-    worker.postMessage({
-        command: "generate",
-        quota
-    });
-});
+// document.querySelector('#generate').addEventListener('click', () => {
+//     const quota = document.querySelector('#quota').value;
+//     worker.postMessage({
+//         command: "generate",
+//         quota
+//     });
+// });
 
-worker.addEventListener('message', (message) => {
-    document.querySelector('#output').textContent = `Finished generating ${message.data} primes!`;
-});
+// worker.addEventListener('message', (message) => {
+//     document.querySelector('#output').textContent = `Finished generating ${message.data} primes!`;
+// });
 
-document.querySelector('#reload').addEventListener('click', () => {
-    document.querySelector("#user-input").value = 'Try typing in here immediately after pressing "Generate primes"';
-    document.location.reload();
-});
+// document.querySelector('#reload').addEventListener('click', () => {
+//     document.querySelector("#user-input").value = 'Try typing in here immediately after pressing "Generate primes"';
+//     document.location.reload();
+// });
+
+const aliceTumbling = [
+    {transform: 'rotate(0) scale(1)'},
+    {transform: 'rotate(360deg) scale(0)'},
+];
+
+const aliceTiming = {
+    duration: 2000,
+    iterations: 1,
+    fill: 'forwards',
+};
+
+const alice1 = document.querySelector('#alice1');
+const alice2 = document.querySelector('#alice2');
+const alice3 = document.querySelector('#alice3');
+
+
+startAnimation = (element, delay) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(element.animate(aliceTumbling, aliceTiming))
+        }, delay)
+    })
+}
+async function playAnims() {
+    alice1.animate(aliceTumbling, aliceTiming);
+    await startAnimation(alice2, aliceTiming.duration)
+    await startAnimation(alice3, aliceTiming.duration)
+}
+
+
+
+playAnims()
