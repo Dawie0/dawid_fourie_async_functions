@@ -152,21 +152,21 @@
 // button.addEventListener("click", setAlarm);
 
 
-const name = document.querySelector("#name");
-const delay = document.querySelector("#delay");
-const button = document.querySelector("#set-alarm");
-const output = document.querySelector("#output");
+// const name = document.querySelector("#name");
+// const delay = document.querySelector("#delay");
+// const button = document.querySelector("#set-alarm");
+// const output = document.querySelector("#output");
 
-alarm = (person, delay) => {
-    return new Promise((resolve, reject) => {
-        if (delay < 0) {
-            throw new Error("Alarm delay must not be negative");
-        }
-        setTimeout(() => {
-            resolve(`Wake up, ${person}!`);
-        }, delay)
-    });
-}
+// alarm = (person, delay) => {
+//     return new Promise((resolve, reject) => {
+//         if (delay < 0) {
+//             throw new Error("Alarm delay must not be negative");
+//         }
+//         setTimeout(() => {
+//             resolve(`Wake up, ${person}!`);
+//         }, delay)
+//     });
+// }
 
 // button.addEventListener("click", () => {
 //     alarm(name.value, delay.value)
@@ -174,12 +174,66 @@ alarm = (person, delay) => {
 //         .catch((error) => (output.textContent = `Couldn't set alarm: ${error}`))
 // });
 
-button.addEventListener("click", async () => {
-    try {
-        const message = await alarm(name.value, delay.value);
-        output.textContent = message;
-    }
-    catch (error) {
-        output.textContent = `Couldn't set alarm: ${error}`;
-    }
+// button.addEventListener("click", async () => {
+//     try {
+//         const message = await alarm(name.value, delay.value);
+//         output.textContent = message;
+//     }
+//     catch (error) {
+//         output.textContent = `Couldn't set alarm: ${error}`;
+//     }
+// });
+
+// generatePrimes = (quota) => {
+//     isPrime = (n) => {
+//         for (let c = 2; c <= Math.sqrt(n); ++c) {
+//             if (n % c === 0) {
+//                 return false;
+//             }
+//         }
+//         return true;
+//     }
+
+//     const primes = [];
+//     const maximum = 1000000;
+
+//     while (primes.length < quota) {
+//         const candidate = Math.floor(Math.random() * (maximum + 1));
+//         if (isPrime(candidate)) {
+//             primes.push(candidate);
+//         }
+//     }
+
+//     return primes;
+// }
+
+// document.querySelector('#generate').addEventListener('click', () => {
+//     const quota = document.querySelector('#quota').value;
+//     const primes = generatePrimes(quota);
+//     document.querySelector('#output').textContent = `Finished generating ${quota} primes!`;
+// });
+
+// document.querySelector('#reload').addEventListener('click', () => {
+//     document.querySelector('#user-input').value = 'Try typing in here immediately after pressing "Generate Primes"';
+//     document.location.reload();
+// })
+
+
+const worker = new Worker("./generate.js");
+
+document.querySelector('#generate').addEventListener('click', () => {
+    const quota = document.querySelector('#quota').value;
+    worker.postMessage({
+        command: "generate",
+        quota
+    });
+});
+
+worker.addEventListener('message', (message) => {
+    document.querySelector('#output').textContent = `Finished generating ${message.data} primes!`;
+});
+
+document.querySelector('#reload').addEventListener('click', () => {
+    document.querySelector("#user-input").value = 'Try typing in here immediately after pressing "Generate primes"';
+    document.location.reload();
 });
